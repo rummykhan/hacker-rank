@@ -21,10 +21,7 @@ Day of the programmer = 256th day of the year
 
 # Old Calendar
 def is_julian_leap(year):
-    if ((year % 4 == 0) and (year % 100 != 0)) or year % 400:
-        return True
-
-    return False
+    return year % 4 == 0
 
 
 # Old Calendar
@@ -34,7 +31,6 @@ def solve_julian(year):
     else:
         feb = 28
 
-    print(is_julian_leap(year), feb)
     sum = 31 + feb + 31 + 30 + 31 + 30 + 31 + 31
 
     return 9, (256 - sum)
@@ -42,7 +38,12 @@ def solve_julian(year):
 
 # New Calendar
 def is_georgian_leap(year):
-    return year % 4 == 0
+    if year % 400 == 0:
+        return True
+    elif year % 4 == 0 and year % 100 != 0:
+        return True
+
+    return False
 
 
 # New Calendar
@@ -65,7 +66,7 @@ def solve_1918(year):
 
     sum = 31 + feb + 31 + 30 + 31 + 30 + 31 + 31 - 13
 
-    return 8, (256 - sum)
+    return 9, (256 - sum)
 
 
 def solve(year):
@@ -79,6 +80,18 @@ def solve(year):
     return '{}.0{}.{}'.format(day, month, year)
 
 
-year = 1800
+year = 1700
+result = solve(year)
+print(result)
+
+year = 1900
+result = solve(year)
+print(result)
+
+year = 2000
+result = solve(year)
+print(result)
+
+year = 1918
 result = solve(year)
 print(result)
