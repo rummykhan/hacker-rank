@@ -1,7 +1,7 @@
 # https://www.hackerrank.com/challenges/magic-square-forming
 
 # !/bin/python3
-
+# This solution is still incomplete
 
 def is_magical(s):
     ref = 0
