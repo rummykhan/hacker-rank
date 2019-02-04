@@ -2,6 +2,8 @@
 
 import sys
 
+#https://www.hackerrank.com/challenges/electronics-shop/problem
+
 
 def getMoneySpent(keyboards, drives, s):
     keyboards = sorted(keyboards, reverse=True)
