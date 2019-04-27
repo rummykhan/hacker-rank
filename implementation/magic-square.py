@@ -15,7 +15,27 @@ def check_sum(s):
     return x1 == x2 and x2 == x3 and x3 == y1 and y1 == y2 and y2 == y3
 
 
-def is_magical(s):
+def check_odd_number_positions(s):
+    e1 = s[0][1]
+    e2 = s[2][1]
+
+    e3 = s[1][0]
+    e4 = s[1][2]
+
+    if e1 in [1, 9]:
+        e2 = [1, 9] - e1
+
+    if e1 is [2, 7]:
+        e2 = [2, 7] - e1
+
+    if e3 in [1, 9]:
+        e4 = [1, 9] - e3
+
+    if e3 in [2, 7]:
+        e4 = [1, 9] - e3
+
+
+def check_number_positions(s):
     arr = [True] * 9
     fixes = []
     repeat = [0] * 9
@@ -45,9 +65,7 @@ def is_magical(s):
     if len(fixes) > 0:
         return fixes, arr, repeat
 
-    magical = check_sum(s)
-
-    return fixes, magical, magical
+    return True, True, True
 
 
 def apply_fixes(s, fixes, vals, repeat):
@@ -63,17 +81,24 @@ def get_cost(s):
     v = False
 
     while v is not True:
-        fixes, v, repeat = is_magical(s)
+        is_magical = check_sum(s)
 
-        if v is True:
+        if is_magical is True:
             return 0
 
-        if v is False:
-            print(fixes)
-            break
+        fixes, arr, repeat = check_number_positions(s)
 
-        s = apply_fixes(s, fixes, v, repeat)
-        break
+        # mean number are not properly positioned
+        if fixes is not True:
+            # apply fixes
+            s = apply_fixes(s, fixes, arr, repeat)
+            break
+        else:
+            print('Numbers are properly positioned')
+            #  numbers are properly positioned
+            #  numbers are mis-aligned
+            break
+            pass
 
 
 '''
@@ -91,36 +116,18 @@ s = [[5, 3, 4], [1, 5, 8], [6, 4, 2]]
 cost = get_cost(s)
 print('COST: {}'.format(cost))
 print('\r\n================\r\n')
-'''
 
-s = [
-    [2, 1, 4],
-    [7, 5, 3],
-    [8, 9, 6]
-]
+s = [[2, 1, 4],[7, 5, 3],[8, 9, 6]]
 cost = get_cost(s)
 print('COST: {}'.format(cost))
 
-s = [
-    [8, 1, 4],
-    [7, 5, 3],
-    [2, 9, 6]
-]
+'''
 
 s = [
-    [8, 1, 6],
-    [7, 5, 3],
-    [2, 9, 4]
-]
-
-s = [
-    [8, 1, 6],
+    [4, 9, 2],
     [3, 5, 7],
-    [2, 9, 4]
+    [8, 1, 7]
 ]
-
-s = [
-    [8, 1, 6],
-    [3, 5, 7],
-    [4, 9, 2]
-]
+cost = get_cost(s)
+print('COST: {}'.format(cost))
+print('\r\n================\r\n')
