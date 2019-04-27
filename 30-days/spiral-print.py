@@ -4,16 +4,11 @@
 def rotate(a, r, c):
     A = []
 
-    k = 0
     for i in range(c - 1, -1, -1):
-        l = 0
         row = []
         for j in range(1, r):
             row.append(a[j][i])
-
-            l += 1
         A.append(row)
-        k += 1
 
     return A
 
