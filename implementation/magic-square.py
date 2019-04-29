@@ -12,121 +12,84 @@ def check_sum(s):
     y2 = s[0][1] + s[1][1] + s[2][1]
     y3 = s[0][2] + s[1][2] + s[2][2]
 
-    return x1 == x2 and x2 == x3 and x3 == y1 and y1 == y2 and y2 == y3
+    d1 = s[0][0] + s[1][1] + s[2][2]
+    d2 = s[0][2] + s[1][1] + s[2][0]
 
-
-def check_odd_number_positions(s):
-    e1 = s[0][1]
-    e2 = s[2][1]
-
-    e3 = s[1][0]
-    e4 = s[1][2]
-
-    if e1 in [1, 9]:
-        e2 = [1, 9] - e1
-
-    if e1 is [2, 7]:
-        e2 = [2, 7] - e1
-
-    if e3 in [1, 9]:
-        e4 = [1, 9] - e3
-
-    if e3 in [2, 7]:
-        e4 = [1, 9] - e3
-
-
-def check_number_positions(s):
-    arr = [True] * 9
-    fixes = []
-    repeat = [0] * 9
-
-    # center = '1,1'  should be 5
-    # edge should be even numbers
-    # center sides should be odd numbers
-
-    for i in range(0, 3):
-        for j in range(0, 3):
-
-            repeat[s[i][j] - 1] += 1
-
-            if i is 1 and j is 1 and s[i][j] is not 5:
-                fixes.append([1, 1, s[1][1]])
-                continue
-            elif i is 1 and j is 1 and s[i][j] is 5:
-                arr[s[i][j] - 1] = False
-                continue
-
-            if s[i][j] % 2 != ((i + j) % 2):
-                fixes.append([i, j, s[i][j]])
-                continue
-
-            arr[s[i][j] - 1] = False
-
-    if len(fixes) > 0:
-        return fixes, arr, repeat
-
-    return True, True, True
-
-
-def apply_fixes(s, fixes, vals, repeat):
-    misplaced = [(i + 1) for i, v in enumerate(vals) if v is True]
-    repeat = [(index + 1) for index, val in enumerate(repeat) if val > 1]
-
-    print(fixes)
-    print(misplaced)
-    print(repeat)
+    return x1 == x2 and x2 == x3 and x3 == y1 and y1 == y2 and y2 == y3 and y3 == d1 and d1 == d2 and d2 == 15
 
 
 def get_cost(s):
-    v = False
+    cost = 0
 
-    while v is not True:
-        is_magical = check_sum(s)
+    if check_sum(s):
+        return 0
 
-        if is_magical is True:
-            return 0
+    if s[1][1] != 5:
+        cost += abs(s[1][1] - 5)
+        s[1][1] = 5
 
-        fixes, arr, repeat = check_number_positions(s)
+    even_rules = {
+        4: {'r': 2, 'l': 8, 'o': 6, 'c': 9, 'd': 3},
+        6: {'r': 8, 'l': 2, 'o': 4, 'c': 1, 'd': 7},
+        8: {'r': 4, 'l': 6, 'o': 2, 'c': 3, 'd': 1},
+        2: {'r': 6, 'l': 4, 'o': 8, 'c': 7, 'd': 9},
+    }
 
-        # mean number are not properly positioned
-        if fixes is not True:
-            # apply fixes
-            s = apply_fixes(s, fixes, arr, repeat)
-            break
-        else:
-            print('Numbers are properly positioned')
-            #  numbers are properly positioned
-            #  numbers are mis-aligned
-            break
-            pass
+    rules = even_rules[s[0][0]]
+
+    if s[2][0] != rules['r']:
+        cost += abs(s[2][0] - rules['r'])
+        s[2][0] = rules['r']
+
+    if s[0][2] != rules['l']:
+        cost += abs(s[0][2] - rules['l'])
+        s[0][2] = rules['l']
+
+    if s[2][2] != rules['o']:
+        cost += abs(s[2][2] - rules['o'])
+        s[2][2] = rules['o']
+
+    if s[1][0] != rules['c']:
+        cost += abs(s[1][0] - rules['c'])
+        s[1][0] = rules['c']
+
+    if s[0][1] != rules['d']:
+        cost += abs(s[0][1] - rules['d'])
+        s[0][1] = rules['d']
+
+    odd_rules = {
+        1: 9,
+        7: 3,
+        9: 1,
+        3: 7
+    }
+
+    odd_rule_1 = odd_rules[s[1][0]]
+    if s[1][2] != odd_rule_1:
+        cost += abs(s[1][2] - odd_rule_1)
+        s[1][2] = odd_rule_1
+
+    odd_rule_2 = odd_rules[s[0][1]]
+    if s[2][1] != odd_rule_2:
+        cost += abs(s[2][1] - odd_rule_1)
+        s[2][1] = odd_rule_2
+
+    print(s)
+
+    return cost
 
 
 '''
-s = [[4, 9, 2], [3, 5, 7], [8, 1, 7]]
-cost = get_cost(s)
-print('COST: {}'.format(cost))
-print('\r\n================\r\n')
 
-s = [[4, 9, 2], [4, 5, 7], [8, 1, 7]]
-cost = get_cost(s)
-print('COST: {}'.format(cost))
-print('\r\n================\r\n')
-
-s = [[5, 3, 4], [1, 5, 8], [6, 4, 2]]
-cost = get_cost(s)
-print('COST: {}'.format(cost))
-print('\r\n================\r\n')
-
-s = [[2, 1, 4],[7, 5, 3],[8, 9, 6]]
-cost = get_cost(s)
-print('COST: {}'.format(cost))
-
+4  3  8
+9  5  1 
+2  7  6
 '''
 
 s = [
-    [4, 9, 2],
-    [3, 5, 7],
-    [8, 1, 7]
+    [4, 8, 2],
+    [4, 5, 7],
+    [6, 1, 6]
 ]
 cost = get_cost(s)
 print('COST: {}'.format(cost))

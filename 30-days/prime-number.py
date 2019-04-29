@@ -1,20 +1,32 @@
-import time
+def is_prime(n):
+    """Returns True if n is prime."""
 
-
-def sieve_of_atkins(number):
-    l1 = [2, 3, 5]
-
-    r = number % 60
-
-
-def is_prime(number, primes):
-    if number <= 1:
+    if n == 1:
         return False
 
-    for i in range(2, (number // 2) + 1):
+    if n == 2:
+        return True
+    if n == 3:
+        return True
+    if n % 2 == 0:
+        return False
+    if n % 3 == 0:
+        return False
 
-        if number % i == 0:
+    i = 5
+    w = 2
+
+    count = 0
+    while i * i <= n:
+        print('{}: {} -- {}'.format(count, i, w))
+
+        if n % i == 0:
             return False
+
+        i += w
+        w = 6 - w
+
+        count += 1
 
     return True
 
@@ -27,18 +39,12 @@ def start():
         number = int(input())
         numbers.append(number)
 
-    primes = []
     for number in numbers:
 
-        s = time.time()
-
-        if is_prime(number, primes):
-            interval = time.time() - s
-            print('Prime - {}'.format(interval))
-            primes.append(number)
+        if is_prime(number):
+            print('Prime')
         else:
-            interval = time.time() - s
-            print('Not prime - {}'.format(interval))
+            print('Not prime')
 
 
 if __name__ == '__main__':
