@@ -10,6 +10,8 @@ import sys
 # Complete the nonDivisibleSubset function below.
 def nonDivisibleSubset(k, S):
     verbose = True
+    output = []
+
     ht = {}
 
     for a in S:
@@ -21,17 +23,32 @@ def nonDivisibleSubset(k, S):
         ht[rem].append(a)
 
     if verbose is True:
-        print(ht)
+        for kx, vx in ht.items():
+            if len(vx) < 10:
+                print('{} -- {}'.format(kx, vx))
+            else:
+                print('{} -- {}'.format(kx, len(vx)))
 
     take = []
     blacklist = []
 
+    #  Special cases
     if len(ht.items()) == 1:
+
         for ki, vi in ht.items():
+
+            if ki == 0:
+                return [1]
+
             return vi
 
+    # Iterate on hash table
     for ki, vi in ht.items():
+
         for kj, vj in ht.items():
+
+            if verbose is True:
+                print('{} - {} % {} == {}'.format(ki, kj, k, ((ki + kj) % k == 0)))
 
             if ki == kj:
                 continue
@@ -53,40 +70,63 @@ def nonDivisibleSubset(k, S):
 
     for b in blacklist:
 
-        if verbose:
-            print('b:{}, b in take:{}'.format(b, b in take))
-
         if b in take:
             take[:] = (value for value in take if value != b)
+
+    if k % 2 == 0:
+        k_half = k // 2
+
+        if k_half in ht:
+            ht[k_half] = [ht[k_half][0]]
+
+        if 0 in ht:
+            ht[0] = [ht[0][0]]
+
+    if 0 in take and 0 in ht:
+        ht[0] = [ht[0][0]]
 
     take = list(set(take))
     if verbose is True:
         print('t:{}, b:{}'.format(take, blacklist))
 
-    output = []
     for t in take:
         output += ht[t]
 
     return output
 
 
-if __name__ == '__main__':
-    nk = [4, 3]
-    nk = [15, 7]
-    nk = [5, 5]
-    nk = [10, 5]
-    nk = [5, 1]
+def start():
+    nk = [10, 4]
 
     n = int(nk[0])
 
     k = int(nk[1])
 
-    S = [1, 7, 2, 4, 5, 6, 10, 8]
-    S = [278, 576, 496, 727, 410, 124, 338, 149, 209, 702, 282, 718, 771, 575, 436]
-    S = [2, 7, 12, 17, 22]
-    S = [770528134, 663501748, 384261537, 800309024, 103668401, 538539662, 385488901, 101262949, 557792122, 46058493]
-    S = [1, 2, 3, 4, 5]
+    S = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
+    print('S:{}, K:{}'.format(S, k))
     result = nonDivisibleSubset(k, S)
 
     print(result)
+
+
+def start_1():
+    nk = []
+    S = []
+
+    with open('question/non-div.txt') as  f:
+        nk = [int(x) for x in f.readline().split(' ')]
+        S = [int(x) for x in f.readline().split(' ')]
+
+    n = nk[0]
+    k = nk[1]
+
+    result = nonDivisibleSubset(k, S)
+
+    print(len(result))
+    print(nk)
+
+
+if __name__ == '__main__':
+    # start()
+    start_1()
