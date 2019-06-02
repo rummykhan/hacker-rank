@@ -47,15 +47,3 @@ if __name__ == '__main__':
     result = hourglassSum(arr)
 
     print('Sum: {}'.format(result))
-
-
-class Person(object):
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
-
-class Student(Person):
-
-    def __init__(self, x, y, z):
-        super().__init__(x, y, z)
